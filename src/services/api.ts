@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: '/api/api/student',
+    baseURL: '/api/student',
 });
 
 apiClient.interceptors.request.use((config) => {

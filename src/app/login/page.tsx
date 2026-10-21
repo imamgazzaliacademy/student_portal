@@ -56,10 +56,10 @@ export default function StudentLoginPage() {
   return (
     <div className="min-h-screen flex flex-col justify-between bg-neutral-50 text-neutral-900">
       {/* Top Banner / Navigation */}
-      <header className="px-6 py-4 flex items-center justify-between border-b border-neutral-200 bg-white">
+      <header className="px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between border-b border-neutral-200 bg-white">
         <div className="flex items-center gap-3">
-          <img src="/fullLogo.png" alt="WMO Imam Gazzali Academy" className="h-9 hidden sm:block object-contain" />
-          <img src="/logo.png" alt="WMO IGA" className="h-8 sm:hidden object-contain" />
+          <img src="/fullLogo.png" alt="WMO Imam Gazzali Academy" className="h-8 sm:h-9 hidden sm:block object-contain" />
+          <img src="/logo.png" alt="WMO IGA" className="h-7 sm:h-8 sm:hidden object-contain" />
         </div>
 
         <a
@@ -72,22 +72,22 @@ export default function StudentLoginPage() {
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 flex items-center justify-center p-4 py-12">
+      <main className="flex-1 flex items-center justify-center p-3 sm:p-4 py-8 sm:py-12">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-neutral-200 overflow-hidden">
           {/* Header - Minimal Black and White */}
-          <div className="bg-neutral-900 p-8 text-white text-center">
+          <div className="bg-neutral-900 p-6 sm:p-8 text-white text-center">
             <div className="w-12 h-12 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center mx-auto mb-3 text-white">
               <GraduationCap size={26} />
             </div>
 
-            <h1 className="text-lg font-bold tracking-tight">Student Academic Portal</h1>
+            <h1 className="text-base sm:text-lg font-bold tracking-tight">Student Academic Portal</h1>
             <p className="text-xs text-neutral-400 mt-1">
               Imam Gazzali Academy • Examination Services
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleLogin} className="p-8 space-y-5">
+          <form onSubmit={handleLogin} className="p-5 sm:p-8 space-y-4 sm:space-y-5">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
                 Admission Number <span className="text-red-500">*</span>

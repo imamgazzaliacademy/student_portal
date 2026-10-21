@@ -164,10 +164,10 @@ export default function HallTicketsPage() {
                 {/* Overall download action or blocked status */}
                 <div>
                   {exam.can_download ? (
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={() => setPreviewExam(exam)}
-                        className="px-3.5 py-2 text-xs font-bold text-[#0d3b2e] bg-[#0d3b2e]/10 hover:bg-[#0d3b2e]/20 border border-[#0d3b2e]/20 rounded-xl flex items-center gap-1.5 transition-colors"
+                        className="flex-1 sm:flex-initial px-3.5 py-2 text-xs font-bold text-[#0d3b2e] bg-[#0d3b2e]/10 hover:bg-[#0d3b2e]/20 border border-[#0d3b2e]/20 rounded-xl flex items-center justify-center gap-1.5 transition-colors"
                       >
                         <Eye size={14} />
                         <span>Preview Ticket</span>
@@ -176,10 +176,10 @@ export default function HallTicketsPage() {
                       <button
                         disabled={downloadingId === exam.examination_id}
                         onClick={() => handleDownload(exam.examination_id, exam.examination_name)}
-                        className="px-4 py-2 text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] rounded-xl shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50"
+                        className="flex-1 sm:flex-initial px-4 py-2 text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
                       >
                         <Download size={14} />
-                        <span>{downloadingId === exam.examination_id ? "Generating..." : "Download Hall Ticket (PDF)"}</span>
+                        <span>{downloadingId === exam.examination_id ? "Generating..." : "Download PDF"}</span>
                       </button>
                     </div>
                   ) : (
@@ -270,27 +270,6 @@ export default function HallTicketsPage() {
                   </span>
                 </div>
               )}
-
-              {/* Subjects Preview Collapsible */}
-              {exam.subjects && exam.subjects.length > 0 && (
-                <div className="pt-2">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">
-                    Scheduled Subjects ({exam.subjects.length})
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {exam.subjects.map((s: any) => (
-                      <span
-                        key={s.id}
-                        className="px-2.5 py-1 rounded-lg bg-gray-100 text-gray-700 text-xs font-medium border border-gray-200 flex items-center gap-1"
-                      >
-                        {s.code && <strong className="font-mono text-[10px] text-gray-500">{s.code}</strong>}
-                        <span>{s.name}</span>
-                        <span className="text-gray-400 text-[10px]">({s.max_marks} M)</span>
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           ))}
         </div>
@@ -298,31 +277,31 @@ export default function HallTicketsPage() {
 
       {/* Hall Ticket Preview Modal */}
       {previewExam && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
-          <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border overflow-hidden my-6 animate-in fade-in zoom-in-95">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="relative w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] bg-white rounded-2xl sm:rounded-3xl shadow-2xl border overflow-hidden flex flex-col animate-in fade-in zoom-in-95">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 bg-[#0d3b2e] text-white">
-              <h3 className="font-bold text-sm">Hall Ticket Preview — {previewExam.examination_name}</h3>
-              <button onClick={() => setPreviewExam(null)} className="p-1.5 text-gray-300 hover:text-white rounded-lg">
+            <div className="shrink-0 flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-[#0d3b2e] text-white">
+              <h3 className="font-bold text-xs sm:text-sm truncate pr-2">Hall Ticket Preview — {previewExam.examination_name}</h3>
+              <button onClick={() => setPreviewExam(null)} className="shrink-0 p-1.5 text-gray-300 hover:text-white rounded-lg">
                 <X size={18} />
               </button>
             </div>
 
             {/* Ticket Preview Card */}
-            <div className="p-6 space-y-6 max-h-[75vh] overflow-y-auto text-xs">
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto flex-1 min-h-0 text-xs">
               {/* Institution Header */}
               <div className="text-center space-y-1 border-b pb-4">
-                <img src="/fullLogo.png" alt="WMO IGA" className="h-10 mx-auto object-contain mb-2" />
-                <h2 className="text-base font-extrabold text-[#0d3b2e]">WMO IMAM GAZZALI ACADEMY</h2>
-                <p className="text-gray-500 text-[11px]">Koolivayal, Panamaram, Wayanad, Kerala - 670721</p>
-                <div className="font-bold text-[#b38e44] uppercase tracking-wider text-xs pt-1">
+                <img src="/fullLogo.png" alt="WMO IGA" className="h-8 sm:h-10 mx-auto object-contain mb-2" />
+                <h2 className="text-sm sm:text-base font-extrabold text-[#0d3b2e]">WMO IMAM GAZZALI ACADEMY</h2>
+                <p className="text-gray-500 text-[10px] sm:text-[11px]">Koolivayal, Panamaram, Wayanad, Kerala - 670721</p>
+                <div className="font-bold text-[#b38e44] uppercase tracking-wider text-[11px] sm:text-xs pt-1">
                   SEMESTER EXAMINATION HALL TICKET — {previewExam.academic_year}
                 </div>
               </div>
 
               {/* Student & Exam Info */}
-              <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-2xl bg-gray-50 border">
-                <div className="w-20 h-24 rounded-xl border-2 border-[#b38e44] bg-white overflow-hidden shrink-0 flex items-center justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 p-3 sm:p-4 rounded-2xl bg-gray-50 border">
+                <div className="w-20 h-24 rounded-xl border-2 border-[#b38e44] bg-white overflow-hidden shrink-0 flex items-center justify-center mx-auto sm:mx-0">
                   {student?.photo_url ? (
                     <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
                   ) : (
@@ -331,7 +310,7 @@ export default function HallTicketsPage() {
                 </div>
 
                 <div className="space-y-1.5 flex-1">
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-center sm:text-left">
                     <div>
                       <span className="text-gray-400 block text-[10px]">Candidate Name</span>
                       <strong className="text-gray-900 text-sm">{student?.full_name}</strong>
@@ -342,7 +321,7 @@ export default function HallTicketsPage() {
                     </div>
                     <div>
                       <span className="text-gray-400 block text-[10px]">Class / Batch</span>
-                      <span className="font-medium text-gray-800">{student?.class_name} ({student?.admission_year})</span>
+                      <span className="font-medium text-gray-800">{student?.class_name} {student?.admission_year && `(${student?.admission_year}/${String(student?.admission_year + 1).slice(-2)})`}</span>
                     </div>
                     <div>
                       <span className="text-gray-400 block text-[10px]">Date of Birth</span>
@@ -352,15 +331,16 @@ export default function HallTicketsPage() {
                 </div>
               </div>
 
-              {/* Subjects Table */}
-              <div className="border rounded-xl overflow-hidden">
-                <table className="w-full text-left text-xs">
+              {/* Subjects Table with Timetable */}
+              <div className="border rounded-xl overflow-x-auto scrollbar-thin">
+                <table className="w-full text-left text-xs whitespace-nowrap min-w-[540px]">
                   <thead className="bg-[#0d3b2e] text-white font-semibold">
                     <tr>
-                      <th className="py-2.5 px-3 w-10">Sl</th>
-                      <th className="py-2.5 px-3">Subject Code</th>
-                      <th className="py-2.5 px-3">Subject Title</th>
-                      <th className="py-2.5 px-3 text-center">Max Marks</th>
+                      <th className="py-2.5 px-3 w-8">Sl</th>
+                      <th className="py-2.5 px-3">Subject</th>
+                      <th className="py-2.5 px-3">Date</th>
+                      <th className="py-2.5 px-3">Time Slot</th>
+                      <th className="py-2.5 px-3 text-center">Max M</th>
                       <th className="py-2.5 px-3 text-center">Invigilator Sign</th>
                     </tr>
                   </thead>
@@ -368,8 +348,16 @@ export default function HallTicketsPage() {
                     {previewExam.subjects?.map((s: any, idx: number) => (
                       <tr key={s.id} className="hover:bg-gray-50">
                         <td className="py-2 px-3 text-gray-400">{idx + 1}</td>
-                        <td className="py-2 px-3 font-mono font-medium">{s.code || "-"}</td>
-                        <td className="py-2 px-3 font-semibold text-gray-900">{s.name}</td>
+                        <td className="py-2 px-3">
+                          <span className="font-semibold text-gray-900">{s.name}</span>
+                          {s.code && <span className="ml-1.5 font-mono text-[10px] text-gray-500">({s.code})</span>}
+                        </td>
+                        <td className="py-2 px-3 text-gray-700 font-medium">
+                          {s.exam_date || "TBA"}
+                        </td>
+                        <td className="py-2 px-3 text-gray-700 font-medium">
+                          {s.time_slot_label || (s.time_slot === "Morning" ? "8:00 AM – 10:00 AM" : s.time_slot === "Afternoon" ? "2:00 PM – 4:00 PM" : "TBA")}
+                        </td>
                         <td className="py-2 px-3 text-center font-bold text-gray-700">{s.max_marks}</td>
                         <td className="py-2 px-3 text-center text-gray-300">_________________</td>
                       </tr>
@@ -388,7 +376,7 @@ export default function HallTicketsPage() {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end gap-3 p-4 border-t bg-gray-50">
+            <div className="shrink-0 flex flex-wrap items-center justify-end gap-2 sm:gap-3 p-3 sm:p-4 border-t bg-gray-50">
               <button
                 type="button"
                 onClick={() => setPreviewExam(null)}
@@ -401,10 +389,10 @@ export default function HallTicketsPage() {
                   handleDownload(previewExam.examination_id, previewExam.examination_name);
                   setPreviewExam(null);
                 }}
-                className="px-5 py-2 text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] rounded-xl shadow-sm flex items-center gap-1.5"
+                className="px-4 sm:px-5 py-2 text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] rounded-xl shadow-sm flex items-center gap-1.5"
               >
                 <Download size={14} />
-                <span>Download Official PDF</span>
+                <span>Download PDF</span>
               </button>
             </div>
           </div>

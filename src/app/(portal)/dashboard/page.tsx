@@ -51,16 +51,20 @@ export default function StudentDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="relative rounded-3xl bg-gradient-to-r from-[#07261d] via-[#0d3b2e] to-[#165342] text-white p-6 sm:p-8 shadow-xl overflow-hidden border border-[#b38e44]/30">
+      <div className="relative rounded-3xl bg-gradient-to-r from-[#07261d] via-[#0d3b2e] to-[#165342] text-white p-5 sm:p-8 shadow-xl overflow-hidden border border-[#b38e44]/30">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#b38e44]/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-5">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-5">
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/10 backdrop-blur-md border-2 border-[#b38e44] overflow-hidden flex items-center justify-center shrink-0 shadow-lg">
               {student?.photo_url ? (
-                <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
+                <img
+                  src={student.photo_url}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
               ) : (
-                <User size={48} className="text-[#d4af37]" />
+                <User size={44} className="text-[#d4af37]" />
               )}
             </div>
 
@@ -68,22 +72,29 @@ export default function StudentDashboardPage() {
               <div className="text-[11px] font-bold tracking-widest uppercase text-[#d4af37]">
                 Authenticated Student
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white">
                 {student?.full_name}
               </h1>
-              <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-emerald-200">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-3 pt-1 text-xs text-emerald-200">
                 <span className="font-mono bg-[#b38e44]/25 text-[#fdfbf7] px-2.5 py-0.5 rounded font-bold border border-[#b38e44]/40">
                   {student?.admission_number}
                 </span>
                 <span>•</span>
-                <span className="font-semibold text-white">{student?.class_name}</span>
+                <span className="font-semibold text-white">
+                  {student?.class_name}
+                </span>
                 <span>•</span>
-                <span>Batch {student?.admission_year}</span>
+                {student?.admission_year && (
+                  <span className="text-emerald-100">
+                    Batch {student?.admission_year}/
+                    {String(student?.admission_year + 1).slice(-2)}
+                  </span>
+                )}
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <Link
               href="/profile"
               className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-white/10 hover:bg-white/20 border border-white/20 transition-all flex items-center gap-1.5 backdrop-blur-sm"
@@ -110,7 +121,8 @@ export default function StudentDashboardPage() {
                 Examination Hall Tickets
               </h3>
               <p className="text-xs text-gray-500 mt-1">
-                View eligibility clearance, No-Due status, and download authenticated PDF hall tickets.
+                View eligibility clearance, No-Due status, and download
+                authenticated PDF hall tickets.
               </p>
             </div>
           </div>
@@ -133,7 +145,8 @@ export default function StudentDashboardPage() {
                 Mark Lists & Results
               </h3>
               <p className="text-xs text-gray-500 mt-1">
-                Check semester examination marks, percentage, subject results, class ranks, and download official mark sheets.
+                Check semester examination marks, percentage, subject results,
+                class ranks, and download official mark sheets.
               </p>
             </div>
           </div>
@@ -156,7 +169,8 @@ export default function StudentDashboardPage() {
                 My Student Profile
               </h3>
               <p className="text-xs text-gray-500 mt-1">
-                Review your registered academic credentials, contact info, date of birth, and official details.
+                Review your registered academic credentials, contact info, date
+                of birth, and official details.
               </p>
             </div>
           </div>
@@ -174,7 +188,10 @@ export default function StudentDashboardPage() {
             <Award className="text-[#0d3b2e]" size={20} />
             Active Examination Cycles
           </h2>
-          <Link href="/hall-tickets" className="text-xs font-bold text-[#b38e44] hover:underline">
+          <Link
+            href="/hall-tickets"
+            className="text-xs font-bold text-[#b38e44] hover:underline"
+          >
             View All Examinations →
           </Link>
         </div>
@@ -186,9 +203,12 @@ export default function StudentDashboardPage() {
         ) : hallTickets.length === 0 ? (
           <div className="p-8 text-center bg-white rounded-2xl border border-dashed border-[#e8dfc8] text-gray-500">
             <GraduationCap size={36} className="mx-auto mb-2 text-gray-300" />
-            <p className="text-sm font-semibold text-gray-800">No active examinations currently scheduled</p>
+            <p className="text-sm font-semibold text-gray-800">
+              No active examinations currently scheduled
+            </p>
             <p className="text-xs text-gray-400 mt-1">
-              Examination schedules and hall ticket release notices will appear here once published.
+              Examination schedules and hall ticket release notices will appear
+              here once published.
             </p>
           </div>
         ) : (
@@ -200,9 +220,12 @@ export default function StudentDashboardPage() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <h4 className="font-bold text-sm text-gray-900">{ht.examination_name}</h4>
+                    <h4 className="font-bold text-sm text-gray-900">
+                      {ht.examination_name}
+                    </h4>
                     <p className="text-xs text-gray-500">
-                      Academic Year: {ht.academic_year} {ht.semester ? `• ${ht.semester}` : ""}
+                      Academic Year: {ht.academic_year}{" "}
+                      {ht.semester ? `• ${ht.semester}` : ""}
                     </p>
                   </div>
 
@@ -222,10 +245,14 @@ export default function StudentDashboardPage() {
                 {/* Eligibility requirements status */}
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="p-2.5 rounded-xl bg-gray-50/80 border">
-                    <span className="text-[10px] uppercase font-bold text-gray-400 block">No-Due Clearance</span>
+                    <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                      No-Due Clearance
+                    </span>
                     <span
                       className={`font-semibold ${
-                        ht.no_due_status === "Approved" ? "text-emerald-700 font-bold" : "text-amber-700"
+                        ht.no_due_status === "Approved"
+                          ? "text-emerald-700 font-bold"
+                          : "text-amber-700"
                       }`}
                     >
                       {ht.no_due_status}
@@ -233,10 +260,14 @@ export default function StudentDashboardPage() {
                   </div>
 
                   <div className="p-2.5 rounded-xl bg-gray-50/80 border">
-                    <span className="text-[10px] uppercase font-bold text-gray-400 block">Examination Fee</span>
+                    <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                      Examination Fee
+                    </span>
                     <span
                       className={`font-semibold ${
-                        ht.fee_status === "Paid" ? "text-emerald-700 font-bold" : "text-amber-700"
+                        ht.fee_status === "Paid"
+                          ? "text-emerald-700 font-bold"
+                          : "text-amber-700"
                       }`}
                     >
                       {ht.fee_status}
@@ -247,7 +278,10 @@ export default function StudentDashboardPage() {
                 {/* Blocked reason banner if not downloadable */}
                 {!ht.can_download && ht.blocked_reason && (
                   <div className="text-xs text-amber-800 bg-amber-50/70 p-2.5 rounded-xl border border-amber-200 flex items-start gap-2">
-                    <AlertCircle size={15} className="text-amber-600 shrink-0 mt-0.5" />
+                    <AlertCircle
+                      size={15}
+                      className="text-amber-600 shrink-0 mt-0.5"
+                    />
                     <span>{ht.blocked_reason}</span>
                   </div>
                 )}

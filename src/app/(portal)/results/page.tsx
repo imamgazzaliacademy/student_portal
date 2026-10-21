@@ -146,8 +146,8 @@ export default function StudentResultsPage() {
       ) : (
         <div className="space-y-6">
           {/* Examination Dropdown / Selector Bar */}
-          <div className="p-5 rounded-2xl bg-white border border-[#e8dfc8] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex-1 max-w-md space-y-1">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#e8dfc8] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex-1 sm:max-w-md space-y-1">
               <label className="block text-xs font-bold uppercase tracking-wider text-gray-600">
                 Select Examination Cycle
               </label>
@@ -165,11 +165,11 @@ export default function StudentResultsPage() {
             </div>
 
             {selectedExamDetail && (
-              <div className="flex items-center gap-2 self-end sm:self-center">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   disabled={downloadingPdf}
                   onClick={handleDownloadPdf}
-                  className="px-5 py-2.5 text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full sm:w-auto px-5 py-2.5 text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   <Download size={15} />
                   <span>{downloadingPdf ? "Generating..." : "Download Official PDF"}</span>
@@ -189,13 +189,13 @@ export default function StudentResultsPage() {
               Select an examination above to view results.
             </div>
           ) : (
-            <div className="bg-white rounded-3xl border border-[#e8dfc8] shadow-sm overflow-hidden space-y-6 p-6 sm:p-8">
+            <div className="bg-white rounded-3xl border border-[#e8dfc8] shadow-sm overflow-hidden space-y-4 sm:space-y-6 p-4 sm:p-8">
               {/* Institution Header inside Statement */}
-              <div className="border-b pb-6 text-center space-y-1 relative">
-                <img src="/fullLogo.png" alt="WMO IGA" className="h-10 mx-auto object-contain mb-2" />
-                <h2 className="text-lg font-extrabold text-[#0d3b2e]">WMO IMAM GAZZALI ACADEMY</h2>
-                <p className="text-gray-500 text-xs">Koolivayal, Panamaram, Wayanad, Kerala - 670721</p>
-                <div className="text-xs font-bold text-[#b38e44] uppercase tracking-widest pt-2">
+              <div className="border-b pb-4 sm:pb-6 text-center space-y-1 relative">
+                <img src="/fullLogo.png" alt="WMO IGA" className="h-8 sm:h-10 mx-auto object-contain mb-2" />
+                <h2 className="text-base sm:text-lg font-extrabold text-[#0d3b2e]">WMO IMAM GAZZALI ACADEMY</h2>
+                <p className="text-gray-500 text-[11px] sm:text-xs">Koolivayal, Panamaram, Wayanad, Kerala - 670721</p>
+                <div className="text-[11px] sm:text-xs font-bold text-[#b38e44] uppercase tracking-widest pt-2">
                   OFFICIAL STATEMENT OF SEMESTER MARKS
                 </div>
                 <div className="text-xs font-semibold text-gray-800">
@@ -204,7 +204,7 @@ export default function StudentResultsPage() {
               </div>
 
               {/* Student Info Box */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-[#fdfbf7] border border-gray-200 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-3 sm:p-4 rounded-2xl bg-[#fdfbf7] border border-gray-200 text-xs">
                 <div>
                   <span className="text-gray-400 block text-[10px] uppercase font-bold">Candidate Name</span>
                   <strong className="text-sm text-gray-900">{selectedExamDetail.student.full_name}</strong>
@@ -216,7 +216,7 @@ export default function StudentResultsPage() {
                 <div>
                   <span className="text-gray-400 block text-[10px] uppercase font-bold">Class / Batch</span>
                   <span className="font-semibold text-gray-800">
-                    {selectedExamDetail.student.class_name} ({selectedExamDetail.student.admission_year})
+                    {selectedExamDetail.student.class_name} {selectedExamDetail?.student?.admission_year && `(${selectedExamDetail.student.admission_year}/${String(selectedExamDetail.student.admission_year + 1).slice(-2)})`}
                   </span>
                 </div>
                 <div>
@@ -226,8 +226,8 @@ export default function StudentResultsPage() {
               </div>
 
               {/* Subjects & Marks Table */}
-              <div className="border rounded-2xl overflow-hidden shadow-xs">
-                <table className="w-full text-left text-xs">
+              <div className="border rounded-2xl overflow-x-auto scrollbar-thin shadow-xs">
+                <table className="w-full text-left text-xs whitespace-nowrap min-w-[620px]">
                   <thead className="bg-[#0d3b2e] text-white font-semibold">
                     <tr>
                       <th className="py-3 px-4 w-12 text-center">Sl</th>
@@ -279,14 +279,14 @@ export default function StudentResultsPage() {
 
               {/* Performance Summary Banner */}
               {selectedExamDetail.result && (
-                <div className="p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="p-4 sm:p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
                   <div className="space-y-1">
                     <span className="text-[10px] uppercase font-bold text-[#b38e44] tracking-widest block">
                       OVERALL PERFORMANCE STATUS
                     </span>
                     <div className="flex items-center gap-3">
                       <span
-                        className={`text-2xl font-black ${
+                        className={`text-xl sm:text-2xl font-black ${
                           selectedExamDetail.result.is_complete
                             ? selectedExamDetail.result.is_passed
                               ? "text-emerald-800"
@@ -306,7 +306,7 @@ export default function StudentResultsPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6 text-xs">
                     <div className="p-3 bg-white/80 rounded-xl border border-gray-200 text-center">
                       <span className="text-gray-400 block text-[10px] uppercase font-bold">Total Marks</span>
                       <strong className="text-sm text-gray-900">

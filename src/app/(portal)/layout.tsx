@@ -54,7 +54,7 @@ export default function PortalLayout({
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#fdfbf7] text-[#1a1a1a]">
+    <div className="min-h-screen flex flex-col bg-[#fdfbf7] text-[#1a1a1a] overflow-x-hidden">
       {/* Top Navbar */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[#e8dfc8] shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -182,7 +182,7 @@ export default function PortalLayout({
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">{children}</main>
+      <main className="flex-1 max-w-7xl w-full mx-auto min-w-0 overflow-x-hidden px-3 sm:px-6 lg:px-8 py-4 sm:py-8">{children}</main>
 
       {/* Portal Footer */}
       <footer className="border-t border-[#e8dfc8] bg-white/60 py-6 text-center text-xs text-gray-500">

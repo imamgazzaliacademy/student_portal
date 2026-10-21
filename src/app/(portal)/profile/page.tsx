@@ -25,12 +25,12 @@ export default function StudentProfilePage() {
       {/* Main Profile Card */}
       <div className="bg-white rounded-3xl border border-[#e8dfc8] shadow-sm overflow-hidden">
         {/* Top Banner with Photo & Badges */}
-        <div className="bg-gradient-to-r from-[#07261d] via-[#0d3b2e] to-[#165342] p-8 text-white flex flex-col sm:flex-row items-center gap-6 relative">
-          <div className="w-28 h-28 rounded-2xl bg-white/10 backdrop-blur-md border-2 border-[#b38e44] overflow-hidden flex items-center justify-center shrink-0 shadow-xl">
+        <div className="bg-gradient-to-r from-[#07261d] via-[#0d3b2e] to-[#165342] p-5 sm:p-8 text-white flex flex-col sm:flex-row items-center gap-5 sm:gap-6 relative">
+          <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white/10 backdrop-blur-md border-2 border-[#b38e44] overflow-hidden flex items-center justify-center shrink-0 shadow-xl">
             {student.photo_url ? (
               <img src={student.photo_url} alt={student.full_name} className="w-full h-full object-cover" />
             ) : (
-              <User size={56} className="text-[#d4af37]" />
+              <User size={52} className="text-[#d4af37]" />
             )}
           </div>
 
@@ -38,21 +38,21 @@ export default function StudentProfilePage() {
             <span className="text-[10px] font-bold tracking-widest uppercase text-[#d4af37] bg-white/10 px-2.5 py-0.5 rounded-full border border-white/10">
               OFFICIAL ACADEMIC RECORD
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">{student.full_name}</h2>
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-1 text-xs text-emerald-200">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white">{student.full_name}</h2>
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-3 pt-1 text-xs text-emerald-200">
               <span className="font-mono bg-[#b38e44]/30 text-white font-bold px-2.5 py-1 rounded-md border border-[#b38e44]/50">
                 {student.admission_number}
               </span>
               <span>•</span>
               <span className="font-semibold text-white">{student.class_name}</span>
               <span>•</span>
-              <span>Batch {student.admission_year}</span>
+              <span>Batch {student.admission_year}/{String(student?.admission_year + 1).slice(-2)}</span>
             </div>
           </div>
         </div>
 
         {/* Profile Details Sections */}
-        <div className="p-8 space-y-8">
+        <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
           {/* Section 1: Academic & Identification */}
           <div className="space-y-4">
             <h3 className="text-xs font-bold uppercase tracking-wider text-[#b38e44] border-b pb-2 flex items-center gap-2">

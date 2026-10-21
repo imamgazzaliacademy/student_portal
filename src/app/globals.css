@@ -11,6 +11,11 @@
   --card-bg: #ffffff;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   background-color: var(--bg-sand);
   color: #1a1a1a;
