@@ -22,6 +22,7 @@ apiClient.interceptors.response.use(
             if (!window.location.pathname.includes('/login')) {
                 localStorage.removeItem('studentToken');
                 localStorage.removeItem('studentData');
+                localStorage.setItem('student_session_expired', 'Your session has expired. Please log in again.');
                 window.location.href = '/login';
             }
         }

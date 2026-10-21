@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
-import { Lock, User, Calendar, ArrowRight, ShieldCheck, GraduationCap } from "lucide-react";
+import { User, Calendar, ArrowRight, ShieldCheck, GraduationCap } from "lucide-react";
 import Link from "next/link";
 
 export default function StudentLoginPage() {
@@ -13,6 +13,19 @@ export default function StudentLoginPage() {
   const [submitting, setSubmitting] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const msg = sessionStorage.getItem("student_session_expired_msg");
+      if (msg) {
+        toast.warning(msg);
+        sessionStorage.removeItem("student_session_expired_msg");
+      }
+      if (localStorage.getItem("studentToken")) {
+        router.push("/dashboard");
+      }
+    }
+  }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,50 +54,47 @@ export default function StudentLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-b from-[#f7f5ed] via-[#fdfbf7] to-[#f4f0e4] text-[#1a1a1a]">
+    <div className="min-h-screen flex flex-col justify-between bg-neutral-50 text-neutral-900">
       {/* Top Banner / Navigation */}
-      <header className="px-6 py-4 flex items-center justify-between border-b border-[#e8dfc8] bg-white/70 backdrop-blur-md">
+      <header className="px-6 py-4 flex items-center justify-between border-b border-neutral-200 bg-white">
         <div className="flex items-center gap-3">
-          <img src="/fullLogo.png" alt="WMO Imam Gazzali Academy" className="h-10 hidden sm:block object-contain" />
-          <img src="/logo.png" alt="WMO IGA" className="h-9 sm:hidden object-contain" />
+          <img src="/fullLogo.png" alt="WMO Imam Gazzali Academy" className="h-9 hidden sm:block object-contain" />
+          <img src="/logo.png" alt="WMO IGA" className="h-8 sm:hidden object-contain" />
         </div>
 
         <a
           href="https://wmoiga.com"
-          className="text-xs font-semibold text-[#8c6e30] hover:text-[#0d3b2e] transition-colors flex items-center gap-1"
+          className="text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition-colors flex items-center gap-1.5"
         >
           <span>Main Website</span>
-          <ArrowRight size={14} />
+          <ArrowRight size={13} />
         </a>
       </header>
 
       {/* Main Container */}
       <main className="flex-1 flex items-center justify-center p-4 py-12">
-        <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-[#ede3cc] overflow-hidden">
-          {/* Accent Header */}
-          <div className="bg-gradient-to-br from-[#07261d] via-[#0d3b2e] to-[#165342] p-8 text-white text-center relative overflow-hidden">
-            <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-[#b38e44]/15 blur-2xl" />
-            <div className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full bg-[#b38e44]/10 blur-xl" />
-
-            <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-[#b38e44]/40 flex items-center justify-center mx-auto mb-4 text-[#d4af37] shadow-lg">
-              <GraduationCap size={32} />
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-neutral-200 overflow-hidden">
+          {/* Header - Minimal Black and White */}
+          <div className="bg-neutral-900 p-8 text-white text-center">
+            <div className="w-12 h-12 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center mx-auto mb-3 text-white">
+              <GraduationCap size={26} />
             </div>
 
-            <h1 className="text-xl font-bold tracking-tight text-[#fdfcf9]">Student Academic Portal</h1>
-            <p className="text-xs text-[#cbd5e1] mt-1">
-              WMO Imam Gazzali Academy, Koolivayal
+            <h1 className="text-lg font-bold tracking-tight">Student Academic Portal</h1>
+            <p className="text-xs text-neutral-400 mt-1">
+              Imam Gazzali Academy • Examination Services
             </p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleLogin} className="p-8 space-y-5">
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
                 Admission Number <span className="text-red-500">*</span>
               </label>
               <div className="relative">
-                <div className="absolute left-3.5 top-3 text-gray-400">
-                  <User size={18} />
+                <div className="absolute left-3.5 top-3 text-neutral-400">
+                  <User size={16} />
                 </div>
                 <input
                   type="text"
@@ -93,54 +103,55 @@ export default function StudentLoginPage() {
                   value={admissionNumber}
                   onChange={(e) => setAdmissionNumber(e.target.value.toUpperCase())}
                   placeholder="e.g. IGA0012022"
-                  className="w-full pl-10 pr-4 py-2.5 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0d3b2e] focus:border-[#0d3b2e] outline-none transition-all placeholder:text-gray-400 font-mono"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm font-medium border border-neutral-300 rounded-lg focus:ring-1 focus:ring-neutral-900 focus:border-neutral-900 outline-none transition-all placeholder:text-neutral-400 font-mono"
                 />
               </div>
-              <p className="text-[11px] text-gray-500 mt-1">Found on your Academy ID card or registration receipt</p>
+              <p className="text-[11px] text-neutral-500 mt-1">Found on your Academy ID card or registration document</p>
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1.5">
                 Date of Birth <span className="text-red-500">*</span>
               </label>
               <div className="relative">
-                <div className="absolute left-3.5 top-3 text-gray-400">
-                  <Calendar size={18} />
+                <div className="absolute left-3.5 top-3 text-neutral-400">
+                  <Calendar size={16} />
                 </div>
                 <input
                   type="date"
                   required
                   value={dateOfBirth}
                   onChange={(e) => setDateOfBirth(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 text-sm font-medium border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#0d3b2e] focus:border-[#0d3b2e] outline-none transition-all text-gray-800"
+                  className="w-full pl-10 pr-4 py-2.5 text-sm font-medium border border-neutral-300 rounded-lg focus:ring-1 focus:ring-neutral-900 focus:border-neutral-900 outline-none transition-all text-neutral-900"
                 />
               </div>
-              <p className="text-[11px] text-gray-500 mt-1">Acts as your confidential student login password</p>
+              <p className="text-[11px] text-neutral-500 mt-1">Acts as your confidential student login password</p>
             </div>
 
+            {/* Login Button - Clean Solid Black Button (NO GRADIENTS) */}
             <div className="pt-2">
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3 px-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-[#0d3b2e] to-[#8c6e30] hover:from-[#07261d] hover:to-[#6d5523] shadow-md hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-lg font-semibold text-xs text-white bg-neutral-900 hover:bg-black transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-xs"
               >
                 {submitting ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     <span>Verifying Credentials...</span>
                   </>
                 ) : (
                   <>
                     <span>Sign In to Student Portal</span>
-                    <ArrowRight size={16} />
+                    <ArrowRight size={14} />
                   </>
                 )}
               </button>
             </div>
 
             {/* Security note */}
-            <div className="pt-4 border-t border-gray-100 flex items-center gap-2 text-[11px] text-gray-500 justify-center">
-              <ShieldCheck size={14} className="text-emerald-700" />
+            <div className="pt-4 border-t border-neutral-100 flex items-center gap-2 text-[11px] text-neutral-500 justify-center">
+              <ShieldCheck size={14} className="text-neutral-700" />
               <span>Protected student session • 256-bit SSL encrypted</span>
             </div>
           </form>
@@ -148,7 +159,7 @@ export default function StudentLoginPage() {
       </main>
 
       {/* Footer */}
-      <footer className="text-center py-4 text-xs text-gray-500 border-t border-[#e8dfc8] bg-white/50">
+      <footer className="text-center py-4 text-xs text-neutral-500 border-t border-neutral-200 bg-white">
         © {new Date().getFullYear()} WMO Imam Gazzali Academy. All rights reserved.
       </footer>
     </div>

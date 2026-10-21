@@ -176,7 +176,7 @@ export default function HallTicketsPage() {
                       <button
                         disabled={downloadingId === exam.examination_id}
                         onClick={() => handleDownload(exam.examination_id, exam.examination_name)}
-                        className="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#0d3b2e] to-[#8c6e30] hover:from-[#07261d] hover:to-[#6d5523] rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-1.5 disabled:opacity-50"
+                        className="px-4 py-2 text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] rounded-xl shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50"
                       >
                         <Download size={14} />
                         <span>{downloadingId === exam.examination_id ? "Generating..." : "Download Hall Ticket (PDF)"}</span>
@@ -301,7 +301,7 @@ export default function HallTicketsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
           <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border overflow-hidden my-6 animate-in fade-in zoom-in-95">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-[#07261d] to-[#0d3b2e] text-white">
+            <div className="flex items-center justify-between px-6 py-4 bg-[#0d3b2e] text-white">
               <h3 className="font-bold text-sm">Hall Ticket Preview — {previewExam.examination_name}</h3>
               <button onClick={() => setPreviewExam(null)} className="p-1.5 text-gray-300 hover:text-white rounded-lg">
                 <X size={18} />

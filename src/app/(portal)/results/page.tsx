@@ -169,7 +169,7 @@ export default function StudentResultsPage() {
                 <button
                   disabled={downloadingPdf}
                   onClick={handleDownloadPdf}
-                  className="px-5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-[#0d3b2e] to-[#8c6e30] hover:from-[#07261d] hover:to-[#6d5523] rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-5 py-2.5 text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] rounded-xl shadow-sm transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   <Download size={15} />
                   <span>{downloadingPdf ? "Generating..." : "Download Official PDF"}</span>
@@ -279,7 +279,7 @@ export default function StudentResultsPage() {
 
               {/* Performance Summary Banner */}
               {selectedExamDetail.result && (
-                <div className="p-6 rounded-2xl bg-gradient-to-r from-emerald-50 via-amber-50 to-emerald-50 border border-emerald-200 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="space-y-1">
                     <span className="text-[10px] uppercase font-bold text-[#b38e44] tracking-widest block">
                       OVERALL PERFORMANCE STATUS
