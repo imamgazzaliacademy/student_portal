@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #0d3b2e;
+  --primary-dark: #07261d;
+  --primary-light: #155e49;
+  --gold: #b38e44;
+  --gold-light: #d4af37;
+  --gold-dark: #8c6e30;
+  --bg-sand: #fdfbf7;
+  --card-bg: #ffffff;
+}
+
+body {
+  background-color: var(--bg-sand);
+  color: #1a1a1a;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  min-height: 100vh;
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #b38e44 0%, #d4af37 50%, #997833 100%);
+}
+
+.emerald-gradient {
+  background: linear-gradient(135deg, #07261d 0%, #0d3b2e 50%, #155e49 100%);
+}
