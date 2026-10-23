@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useNotifications } from "@/context/NotificationContext";
 import Link from "next/link";
 import {
   User,
@@ -15,21 +16,25 @@ import {
   Download,
   AlertCircle,
   GraduationCap,
+  Megaphone,
 } from "lucide-react";
 import apiClient from "@/services/api";
 
 export default function StudentDashboardPage() {
   const { student } = useAuth();
+  const { openNotifications } = useNotifications();
   const [hallTickets, setHallTickets] = useState<any[]>([]);
   const [results, setResults] = useState<any[]>([]);
+  const [announcements, setAnnouncements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [htRes, resRes] = await Promise.allSettled([
+        const [htRes, resRes, annRes] = await Promise.allSettled([
           apiClient.get("/hall_tickets"),
           apiClient.get("/results"),
+          apiClient.get("/announcements"),
         ]);
 
         if (htRes.status === "fulfilled" && htRes.value.data?.data) {
@@ -37,6 +42,13 @@ export default function StudentDashboardPage() {
         }
         if (resRes.status === "fulfilled" && resRes.value.data?.data) {
           setResults(resRes.value.data.data);
+        }
+        if (annRes.status === "fulfilled" && Array.isArray(annRes.value.data?.data)) {
+          // Strictly display only Student Portal announcements
+          const studentNotices = annRes.value.data.data.filter(
+            (item: any) => item.category === "Student Portal"
+          );
+          setAnnouncements(studentNotices);
         }
       } catch (err) {
         console.error("Dashboard data error", err);
@@ -179,6 +191,92 @@ export default function StudentDashboardPage() {
             <ArrowRight size={14} className="ml-1" />
           </div>
         </Link>
+      </div>
+
+      {/* Student Announcements Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <Megaphone className="text-[#0d3b2e]" size={20} />
+            Student Announcements
+          </h2>
+          {announcements.length > 0 && (
+            <button
+              type="button"
+              onClick={openNotifications}
+              className="text-xs font-bold text-[#b38e44] hover:underline flex items-center gap-1 cursor-pointer"
+            >
+              <span>View in Notifications ({announcements.length})</span>
+              <ArrowRight size={13} />
+            </button>
+          )}
+        </div>
+
+        {loading ? (
+          <div className="p-8 text-center text-xs text-gray-500 bg-white rounded-2xl border border-[#e8dfc8]">
+            <div className="w-6 h-6 border-2 border-[#0d3b2e] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+            <span>Checking student notices...</span>
+          </div>
+        ) : announcements.length === 0 ? (
+          <div className="p-6 text-center bg-white rounded-2xl border border-dashed border-[#e8dfc8] text-gray-500">
+            <p className="text-xs font-semibold text-gray-800">
+              No new announcements at this time
+            </p>
+            <p className="text-[11px] text-gray-400 mt-0.5">
+              Official institutional announcements and circulars for students will appear here.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {announcements.slice(0, 4).map((ann: any) => (
+              <div
+                key={ann.id}
+                className="p-5 rounded-2xl bg-white border border-[#e8dfc8] shadow-xs space-y-3 hover:border-[#b38e44] transition-all flex flex-col justify-between"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                      Student Portal
+                    </span>
+                    {ann.createdAt && (
+                      <span className="text-xs text-gray-400">
+                        {new Date(ann.createdAt).toLocaleDateString(undefined, {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-bold text-sm text-gray-900 leading-snug">
+                    {ann.title}
+                  </h3>
+                  <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed whitespace-pre-line">
+                    {ann.content}
+                  </p>
+                </div>
+
+                {ann.attachment_url && (
+                  <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between gap-2">
+                    <span className="text-[11px] text-gray-500 truncate max-w-[150px]">
+                      {ann.attachment_name || "Attachment"}
+                    </span>
+                    <a
+                      href={ann.attachment_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-[#0d3b2e] hover:bg-[#07261d] transition-colors shrink-0"
+                    >
+                      <Download size={13} />
+                      <span>{ann.download_link_text || "Download File"}</span>
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Active Examination Cycles & Eligibility Overview */}

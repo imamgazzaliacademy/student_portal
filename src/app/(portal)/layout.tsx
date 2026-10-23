@@ -3,26 +3,28 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { NotificationProvider, useNotifications } from "@/context/NotificationContext";
+import NotificationDrawer from "@/components/NotificationDrawer";
 import Link from "next/link";
 import {
   LayoutDashboard,
   User,
   Ticket,
   FileSpreadsheet,
+  Bell,
   LogOut,
   Menu,
   X,
-  GraduationCap,
   ChevronRight,
-  ShieldCheck,
 } from "lucide-react";
 
-export default function PortalLayout({
+function PortalLayoutContent({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const { student, isAuthenticated, loading, logout } = useAuth();
+  const { announcements, openNotifications } = useNotifications();
   const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -91,8 +93,25 @@ export default function PortalLayout({
             })}
           </nav>
 
-          {/* Right: Student Chip & Logout */}
-          <div className="flex items-center gap-3">
+          {/* Right: Notification Bell, Student Chip & Logout */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Notification (Bell) Icon */}
+            <button
+              type="button"
+              onClick={openNotifications}
+              title="Announcements & Notifications"
+              aria-label="View announcements"
+              className="relative p-2.5 rounded-xl text-gray-700 hover:text-[#0d3b2e] hover:bg-[#0d3b2e]/10 border border-[#e8dfc8] hover:border-[#b38e44] transition-all bg-white shadow-xs focus:outline-none focus:ring-2 focus:ring-[#0d3b2e]/20 cursor-pointer"
+            >
+              <Bell size={18} className="text-[#0d3b2e]" />
+              {announcements.length > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white text-[10px] font-extrabold flex items-center justify-center border-2 border-white shadow-xs animate-pulse">
+                  {announcements.length}
+                </span>
+              )}
+            </button>
+
+            {/* Student Profile Link */}
             <Link
               href="/profile"
               className="flex items-center gap-2.5 p-1.5 pr-3 rounded-full bg-gray-50 border border-gray-200 hover:border-[#b38e44] transition-colors"
@@ -113,7 +132,7 @@ export default function PortalLayout({
             <button
               onClick={logout}
               title="Sign Out"
-              className="p-2 text-gray-500 hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors hidden sm:flex items-center gap-1 text-xs font-semibold"
+              className="p-2 text-gray-500 hover:text-red-700 hover:bg-red-50 rounded-xl transition-colors hidden sm:flex items-center gap-1 text-xs font-semibold cursor-pointer"
             >
               <LogOut size={16} />
               <span className="hidden md:inline">Logout</span>
@@ -122,7 +141,7 @@ export default function PortalLayout({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-gray-600 hover:text-[#0d3b2e] rounded-xl hover:bg-gray-100"
+              className="lg:hidden p-2 text-gray-600 hover:text-[#0d3b2e] rounded-xl hover:bg-gray-100 cursor-pointer"
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -132,19 +151,41 @@ export default function PortalLayout({
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="lg:hidden border-t border-[#e8dfc8] bg-white px-4 py-3 space-y-1 shadow-lg animate-in slide-in-from-top-2">
-            <div className="p-3 mb-2 rounded-xl bg-gray-50 border flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-emerald-100 overflow-hidden flex items-center justify-center font-bold text-sm text-emerald-900 shrink-0">
-                {student?.photo_url ? (
-                  <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  student?.full_name?.charAt(0) || "S"
-                )}
-              </div>
-              <div>
-                <div className="font-bold text-sm text-gray-900">{student?.full_name}</div>
-                <div className="text-xs text-gray-500 font-mono">{student?.admission_number}</div>
+            <div className="p-3 mb-2 rounded-xl bg-gray-50 border flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-emerald-100 overflow-hidden flex items-center justify-center font-bold text-sm text-emerald-900 shrink-0">
+                  {student?.photo_url ? (
+                    <img src={student.photo_url} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    student?.full_name?.charAt(0) || "S"
+                  )}
+                </div>
+                <div>
+                  <div className="font-bold text-sm text-gray-900">{student?.full_name}</div>
+                  <div className="text-xs text-gray-500 font-mono">{student?.admission_number}</div>
+                </div>
               </div>
             </div>
+
+            {/* Quick action to open announcements sidebar from mobile menu */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openNotifications();
+              }}
+              className="w-full px-3 py-2.5 rounded-xl text-xs font-bold text-gray-700 hover:bg-gray-100 flex items-center justify-between transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <Bell size={16} className="text-[#0d3b2e]" />
+                <span>Announcements</span>
+              </div>
+              {announcements.length > 0 && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#0d3b2e] text-white">
+                  {announcements.length}
+                </span>
+              )}
+            </button>
 
             {navLinks.map((item) => {
               const Icon = item.icon;
@@ -172,7 +213,7 @@ export default function PortalLayout({
                 setMobileMenuOpen(false);
                 logout();
               }}
-              className="w-full mt-2 px-3 py-2.5 rounded-xl text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 flex items-center justify-center gap-2 transition-colors"
+              className="w-full mt-2 px-3 py-2.5 rounded-xl text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <LogOut size={16} />
               <span>Sign Out</span>
@@ -191,6 +232,21 @@ export default function PortalLayout({
           <p>Koolivayal, Panamaram, Wayanad, Kerala - 670721</p>
         </div>
       </footer>
+
+      {/* Right-Side Notifications Drawer */}
+      <NotificationDrawer />
     </div>
+  );
+}
+
+export default function PortalLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <NotificationProvider>
+      <PortalLayoutContent>{children}</PortalLayoutContent>
+    </NotificationProvider>
   );
 }
