@@ -80,11 +80,10 @@ function PortalLayoutContent({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-                    isActive
-                      ? "bg-[#0d3b2e] text-white shadow-sm"
-                      : "text-gray-600 hover:text-[#0d3b2e] hover:bg-gray-100/70"
-                  }`}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${isActive
+                    ? "bg-[#0d3b2e] text-white shadow-sm"
+                    : "text-gray-600 hover:text-[#0d3b2e] hover:bg-gray-100/70"
+                    }`}
                 >
                   <Icon size={15} />
                   <span>{item.name}</span>
@@ -195,9 +194,8 @@ function PortalLayoutContent({
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-3 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between ${
-                    isActive ? "bg-[#0d3b2e] text-white" : "text-gray-700 hover:bg-gray-100"
-                  }`}
+                  className={`px-3 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-between ${isActive ? "bg-[#0d3b2e] text-white" : "text-gray-700 hover:bg-gray-100"
+                    }`}
                 >
                   <div className="flex items-center gap-2.5">
                     <Icon size={16} />
@@ -230,6 +228,7 @@ function PortalLayoutContent({
         <div className="max-w-7xl mx-auto px-4 space-y-1">
           <p className="font-semibold text-gray-700">WMO Imam Gazzali Academy • Student Academic Services</p>
           <p>Koolivayal, Panamaram, Wayanad, Kerala - 670721</p>
+          <p>Design and Developed by <Link href="https://aashique.space" target="_blank" className="px-1 cursor-pointer text-gray-700 no-underline hover:underline hover:text-(--accent-gold) transition-all duration-1000">Ashique Ghazali</Link></p>
         </div>
       </footer>
 
