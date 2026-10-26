@@ -9,7 +9,6 @@ import {
   Ticket,
   FileSpreadsheet,
   Award,
-  Calendar,
   CheckCircle,
   Clock,
   ArrowRight,
@@ -347,11 +346,10 @@ export default function StudentDashboardPage() {
                       No-Due Clearance
                     </span>
                     <span
-                      className={`font-semibold ${
-                        ht.no_due_status === "Approved"
+                      className={`font-semibold ${ht.no_due_status === "Approved"
                           ? "text-emerald-700 font-bold"
                           : "text-amber-700"
-                      }`}
+                        }`}
                     >
                       {ht.no_due_status}
                     </span>
@@ -362,11 +360,10 @@ export default function StudentDashboardPage() {
                       Examination Fee
                     </span>
                     <span
-                      className={`font-semibold ${
-                        ht.fee_status === "Paid"
+                      className={`font-semibold ${ht.fee_status === "Paid"
                           ? "text-emerald-700 font-bold"
                           : "text-amber-700"
-                      }`}
+                        }`}
                     >
                       {ht.fee_status}
                     </span>
