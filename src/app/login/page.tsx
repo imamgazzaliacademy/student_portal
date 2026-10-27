@@ -102,7 +102,7 @@ export default function StudentLoginPage() {
                   autoCapitalize="characters"
                   value={admissionNumber}
                   onChange={(e) => setAdmissionNumber(e.target.value.toUpperCase())}
-                  placeholder="e.g. IGA0012022"
+                  placeholder="e.g. IGA26HS001"
                   className="w-full pl-10 pr-4 py-2.5 text-sm font-medium border border-neutral-300 rounded-lg focus:ring-1 focus:ring-neutral-900 focus:border-neutral-900 outline-none transition-all placeholder:text-neutral-400 font-mono"
                 />
               </div>
