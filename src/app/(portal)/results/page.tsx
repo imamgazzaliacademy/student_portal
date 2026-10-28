@@ -227,54 +227,159 @@ export default function StudentResultsPage() {
 
               {/* Subjects & Marks Table */}
               <div className="border rounded-2xl overflow-x-auto scrollbar-thin shadow-xs">
-                <table className="w-full text-left text-xs whitespace-nowrap min-w-[620px]">
-                  <thead className="bg-[#0d3b2e] text-white font-semibold">
-                    <tr>
-                      <th className="py-3 px-4 w-12 text-center">Sl</th>
-                      <th className="py-3 px-4">Subject Code</th>
-                      <th className="py-3 px-4">Subject Title</th>
-                      <th className="py-3 px-4 text-center">Max Marks</th>
-                      <th className="py-3 px-4 text-center">Pass Marks</th>
-                      <th className="py-3 px-4 text-center">Marks Obtained</th>
-                      <th className="py-3 px-4 text-center">Result</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {selectedExamDetail.subjects.map((subj: any, idx: number) => (
-                      <tr key={subj.subject_id} className="hover:bg-gray-50/70 transition-colors">
-                        <td className="py-3 px-4 text-center text-gray-400">{idx + 1}</td>
-                        <td className="py-3 px-4 font-mono font-bold text-gray-600">{subj.code || "-"}</td>
-                        <td className="py-3 px-4 font-bold text-gray-900">{subj.name}</td>
-                        <td className="py-3 px-4 text-center font-semibold text-gray-600">{subj.max_marks}</td>
-                        <td className="py-3 px-4 text-center font-semibold text-emerald-800">{subj.pass_marks}</td>
-                        <td className="py-3 px-4 text-center font-bold text-sm">
-                          {subj.is_absent ? (
-                            <span className="text-red-600 font-bold">Absent</span>
-                          ) : subj.marks_obtained !== null ? (
-                            <span className={subj.is_passed ? "text-gray-900" : "text-red-600 font-bold"}>
-                              {subj.marks_obtained}
-                            </span>
-                          ) : (
-                            <span className="text-gray-400">-</span>
-                          )}
-                        </td>
-                        <td className="py-3 px-4 text-center font-bold">
-                          {subj.is_absent ? (
-                            <span className="text-red-600">FAILED (AB)</span>
-                          ) : subj.is_passed ? (
-                            <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200">
-                              <Check size={12} /> PASSED
-                            </span>
-                          ) : (
-                            <span className="text-red-600 bg-red-50 px-2 py-0.5 rounded text-[11px] border border-red-200">
-                              FAILED
-                            </span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                {(() => {
+                  const hasAnyCE = selectedExamDetail.subjects.some((s: any) => Number(s.ce_max_marks || 0) > 0);
+
+                  if (hasAnyCE) {
+                    return (
+                      <table className="w-full text-left text-xs whitespace-nowrap min-w-[720px]">
+                        <thead className="bg-[#0d3b2e] text-white font-semibold">
+                          <tr>
+                            <th className="py-3 px-4 w-12 text-center">Sl</th>
+                            <th className="py-3 px-4 w-28">Subject Code</th>
+                            <th className="py-3 px-4">Subject Title</th>
+                            <th className="py-3 px-4 text-center">Exam Marks (Obt / Max)</th>
+                            <th className="py-3 px-4 text-center">CE Marks (Obt / Max)</th>
+                            <th className="py-3 px-4 text-center">Total Marks (Obt / Max)</th>
+                            <th className="py-3 px-4 text-center">Result</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y">
+                          {selectedExamDetail.subjects.map((subj: any, idx: number) => {
+                            const isCE = Number(subj.ce_max_marks || 0) > 0;
+                            const subjTotalMax = Number(subj.total_max_marks || (Number(subj.max_marks) + Number(subj.ce_max_marks || 0)));
+                            const examObt = subj.exam_marks_obtained !== null && subj.exam_marks_obtained !== undefined ? subj.exam_marks_obtained : subj.marks_obtained;
+                            const ceObt = Number(subj.ce_marks_obtained || 0);
+                            const examPassed = examObt >= subj.pass_marks;
+                            const cePassed = !isCE || ceObt >= (subj.ce_pass_marks || 0);
+
+                            return (
+                              <tr key={subj.subject_id} className="hover:bg-gray-50/70 transition-colors">
+                                <td className="py-3 px-4 text-center text-gray-400">{idx + 1}</td>
+                                <td className="py-3 px-4 font-mono font-bold text-gray-600">{subj.code || "-"}</td>
+                                <td className="py-3 px-4 font-bold text-gray-900">{subj.name}</td>
+
+                                <td className="py-3 px-4 text-center">
+                                  {subj.is_absent ? (
+                                    <span className="text-red-600 font-bold">Absent</span>
+                                  ) : subj.marks_obtained !== null ? (
+                                    <div>
+                                      <span className={examPassed ? "text-gray-900 font-bold" : "text-red-600 font-bold"}>
+                                        {examObt}
+                                      </span>
+                                      <span className="text-gray-500 font-normal text-[11px]"> / {subj.max_marks}</span>
+                                      <span className="text-emerald-800 text-[10px] block">Pass: {subj.pass_marks}</span>
+                                    </div>
+                                  ) : (
+                                    <span className="text-gray-400">-</span>
+                                  )}
+                                </td>
+
+                                <td className="py-3 px-4 text-center">
+                                  {!isCE ? (
+                                    <span className="text-gray-400 font-mono">-</span>
+                                  ) : subj.is_absent ? (
+                                    <span className="text-red-600 font-bold">Absent</span>
+                                  ) : subj.marks_obtained !== null ? (
+                                    <div>
+                                      <span className={cePassed ? "text-gray-900 font-bold" : "text-red-600 font-bold"}>
+                                        {ceObt}
+                                      </span>
+                                      <span className="text-gray-500 font-normal text-[11px]"> / {subj.ce_max_marks}</span>
+                                      <span className="text-emerald-800 text-[10px] block">Pass: {subj.ce_pass_marks || 0}</span>
+                                    </div>
+                                  ) : (
+                                    <span className="text-gray-400">-</span>
+                                  )}
+                                </td>
+
+                                <td className="py-3 px-4 text-center font-bold">
+                                  {subj.is_absent ? (
+                                    <span className="text-red-600">0 / {subjTotalMax}</span>
+                                  ) : subj.marks_obtained !== null ? (
+                                    <div>
+                                      <span className={subj.is_passed ? "text-gray-900 text-sm" : "text-red-600 text-sm"}>
+                                        {subj.marks_obtained}
+                                      </span>
+                                      <span className="text-gray-500 font-normal text-[11px]"> / {subjTotalMax}</span>
+                                    </div>
+                                  ) : (
+                                    <span className="text-gray-400">-</span>
+                                  )}
+                                </td>
+
+                                <td className="py-3 px-4 text-center font-bold">
+                                  {subj.is_absent ? (
+                                    <span className="text-red-600">FAILED (AB)</span>
+                                  ) : subj.is_passed ? (
+                                    <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200">
+                                      <Check size={12} /> PASSED
+                                    </span>
+                                  ) : (
+                                    <span className="text-red-600 bg-red-50 px-2 py-0.5 rounded text-[11px] border border-red-200">
+                                      FAILED
+                                    </span>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    );
+                  }
+
+                  return (
+                    <table className="w-full text-left text-xs whitespace-nowrap min-w-[620px]">
+                      <thead className="bg-[#0d3b2e] text-white font-semibold">
+                        <tr>
+                          <th className="py-3 px-4 w-12 text-center">Sl</th>
+                          <th className="py-3 px-4">Subject Code</th>
+                          <th className="py-3 px-4">Subject Title</th>
+                          <th className="py-3 px-4 text-center">Max Marks</th>
+                          <th className="py-3 px-4 text-center">Pass Marks</th>
+                          <th className="py-3 px-4 text-center">Marks Obtained</th>
+                          <th className="py-3 px-4 text-center">Result</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y">
+                        {selectedExamDetail.subjects.map((subj: any, idx: number) => (
+                          <tr key={subj.subject_id} className="hover:bg-gray-50/70 transition-colors">
+                            <td className="py-3 px-4 text-center text-gray-400">{idx + 1}</td>
+                            <td className="py-3 px-4 font-mono font-bold text-gray-600">{subj.code || "-"}</td>
+                            <td className="py-3 px-4 font-bold text-gray-900">{subj.name}</td>
+                            <td className="py-3 px-4 text-center font-semibold text-gray-600">{subj.max_marks}</td>
+                            <td className="py-3 px-4 text-center font-semibold text-emerald-800">{subj.pass_marks}</td>
+                            <td className="py-3 px-4 text-center font-bold text-sm">
+                              {subj.is_absent ? (
+                                <span className="text-red-600 font-bold">Absent</span>
+                              ) : subj.marks_obtained !== null ? (
+                                <span className={subj.is_passed ? "text-gray-900" : "text-red-600 font-bold"}>
+                                  {subj.marks_obtained}
+                                </span>
+                              ) : (
+                                <span className="text-gray-400">-</span>
+                              )}
+                            </td>
+                            <td className="py-3 px-4 text-center font-bold">
+                              {subj.is_absent ? (
+                                <span className="text-red-600">FAILED (AB)</span>
+                              ) : subj.is_passed ? (
+                                <span className="inline-flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-200">
+                                  <Check size={12} /> PASSED
+                                </span>
+                              ) : (
+                                <span className="text-red-600 bg-red-50 px-2 py-0.5 rounded text-[11px] border border-red-200">
+                                  FAILED
+                                </span>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  );
+                })()}
               </div>
 
               {/* Performance Summary Banner */}
