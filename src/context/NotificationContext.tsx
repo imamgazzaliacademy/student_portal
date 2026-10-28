@@ -36,11 +36,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       setLoading(true);
       const res = await apiClient.get("/announcements");
       if (res.data?.data && Array.isArray(res.data.data)) {
-        // Strictly filter to Student Portal announcements only
-        const studentOnly = res.data.data.filter(
-          (item: AnnouncementNotification) => item.category === "Student Portal"
-        );
-        setAnnouncements(studentOnly);
+        setAnnouncements(res.data.data);
       }
     } catch (err) {
       console.error("Failed to load student announcements", err);

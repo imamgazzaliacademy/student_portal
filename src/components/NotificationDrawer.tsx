@@ -94,7 +94,7 @@ export default function NotificationDrawer() {
                 {/* Notice Header */}
                 <div className="flex items-center justify-between gap-2">
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200">
-                    Student Portal
+                    Notice
                   </span>
                   {item.createdAt && (
                     <span className="text-[11px] text-gray-400 flex items-center gap-1 font-medium">

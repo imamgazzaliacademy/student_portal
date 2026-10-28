@@ -43,11 +43,7 @@ export default function StudentDashboardPage() {
           setResults(resRes.value.data.data);
         }
         if (annRes.status === "fulfilled" && Array.isArray(annRes.value.data?.data)) {
-          // Strictly display only Student Portal announcements
-          const studentNotices = annRes.value.data.data.filter(
-            (item: any) => item.category === "Student Portal"
-          );
-          setAnnouncements(studentNotices);
+          setAnnouncements(annRes.value.data.data);
         }
       } catch (err) {
         console.error("Dashboard data error", err);
@@ -235,7 +231,7 @@ export default function StudentDashboardPage() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                      Student Portal
+                      Notice
                     </span>
                     {ann.createdAt && (
                       <span className="text-xs text-gray-400">
