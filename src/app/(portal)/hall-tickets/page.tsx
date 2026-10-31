@@ -356,7 +356,7 @@ export default function HallTicketsPage() {
                           {s.exam_date || "TBA"}
                         </td>
                         <td className="py-2 px-3 text-gray-700 font-medium">
-                          {s.time_slot_label || (s.time_slot === "Morning" ? "8:00 AM – 10:00 AM" : s.time_slot === "Afternoon" ? "2:00 PM – 4:00 PM" : "TBA")}
+                          {s.time_slot_label || (s.time_slot === "Morning" ? "7:30 AM – 9:30 AM" : s.time_slot === "Afternoon" ? "2:00 PM – 4:00 PM" : "TBA")}
                         </td>
                         <td className="py-2 px-3 text-center font-bold text-gray-700">{s.max_marks}</td>
                         <td className="py-2 px-3 text-center text-gray-300">_________________</td>
