@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  FileDown,
 } from "lucide-react";
 
 function PortalLayoutContent({
@@ -53,6 +54,7 @@ function PortalLayoutContent({
     { name: "My Profile", href: "/profile", icon: User },
     { name: "Hall Tickets", href: "/hall-tickets", icon: Ticket },
     { name: "Mark Lists & Results", href: "/results", icon: FileSpreadsheet },
+    { name: "Forms Download", href: "/forms", icon: FileDown },
   ];
 
   return (
